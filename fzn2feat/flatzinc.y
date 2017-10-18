@@ -253,10 +253,14 @@ int_ti_expr_tail:
   INT {
     $$.type = INT_EXPR;
     $$.dom_size = MAX_INT_SIZE;
+    $$.dom_lower = 0;
+    $$.dom_upper = MAX_INT_SIZE;
   }
   | INT_LITERAL DOTDOT INT_LITERAL {
     $$.type = INT_EXPR;
     $$.dom_size = $3 - $1 + 1;
+    $$.dom_lower = $1;
+    $$.dom_upper = $3;
   }
   | '{' int_literals '}' {
     $$.type = INT_EXPR;

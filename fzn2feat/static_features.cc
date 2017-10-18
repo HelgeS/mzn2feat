@@ -20,6 +20,8 @@ struct var_info {
   int         id;
   const char* name;
   double      dom_size;
+  double      dom_lower;
+  double      dom_upper;
   expr_type   type;
   expr_set*   anns;
   bool        array;
@@ -645,13 +647,15 @@ private:
     features["s_other_val"]    = 0.0;    
   }
 
-  // Initialize objective function (8 features).
+  // Initialize objective function (10 features).
   void
   init_objfn() {
     features["o_dom"]      = 0.0;
     features["o_dom_avg"]  = 0.0;
     features["o_dom_std"]  = 0.0;
     features["o_dom_deg"]  = 0.0;
+    features["o_dom_lower"]  = 0.0;
+    features["o_dom_upper"]  = 0.0;
     features["o_deg"]      = 0.0;
     features["o_deg_avg"]  = 0.0;
     features["o_deg_std"]  = 0.0;
@@ -858,6 +862,8 @@ private:
   void 
   final_update_obj() {
     double dom = obj_var.dom_size;
+    double dom_lower = obj_var.dom_lower;
+    double dom_upper = obj_var.dom_upper;
     double deg = obj_var.degree;
     double avg_dom = features["v_avg_dom_vars"];
     double std_dom = features["v_cv_dom_vars"] * avg_dom;
@@ -869,6 +875,8 @@ private:
     features["o_dom_avg"] = dom / avg_dom;
     features["o_dom_std"] = (dom - avg_dom) / std_dom;
     features["o_dom_deg"] = dom / deg;
+    features["o_dom_lower"] = dom_lower;
+    features["o_dom_upper"] = dom_upper;
 
     features["o_deg"] = deg;
     features["o_deg_avg"] = deg / avg_deg;
