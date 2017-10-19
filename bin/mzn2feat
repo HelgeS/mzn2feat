@@ -119,7 +119,8 @@ def fzn2feat(fzn_file, output, redirect):
     Extracts features from a FlatZinc model.
     """
     global PID, KEEP, TMP_FZN, TMP_MZN
-    cmd = 'fzn2feat ' + fzn_file + ' ' + output
+    bin_path = os.path.join(MZN2FEAT_HOME, 'bin', 'fzn2feat')
+    cmd = bin_path + ' ' + fzn_file + ' ' + output
     if redirect:
         out = open(redirect, 'w')
     else:
