@@ -30,14 +30,9 @@
 %
 %
 
-predicate gecode_link_set_to_booleans(var set of int: s, array[int] of var bool: b, int: idx);
+predicate array_bool_lt(array[int] of var bool: x,
+                        array[int] of var bool: y);
 
-predicate link_set_to_booleans(var set of int: s, array[int] of var bool: b) =
-    assert(ub(s) subset index_set(b),
-        "link_set_to_booleans: the index set of b must be a superset of the possible values of s",
-        if min(index_set(b)) < 0 then
-          forall(i in index_set(b)) ( b[i] <-> i in s )
-        else
-          gecode_link_set_to_booleans(s,b,min(index_set(b)))
-        endif
-    );
+predicate lex_less_bool(array[int] of var bool: x,
+                        array[int] of var bool: y) =
+    array_bool_lt(x,y);

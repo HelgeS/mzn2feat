@@ -30,14 +30,8 @@
 %
 %
 
-predicate gecode_link_set_to_booleans(var set of int: s, array[int] of var bool: b, int: idx);
-
-predicate link_set_to_booleans(var set of int: s, array[int] of var bool: b) =
-    assert(ub(s) subset index_set(b),
-        "link_set_to_booleans: the index set of b must be a superset of the possible values of s",
-        if min(index_set(b)) < 0 then
-          forall(i in index_set(b)) ( b[i] <-> i in s )
-        else
-          gecode_link_set_to_booleans(s,b,min(index_set(b)))
-        endif
-    );
+predicate member_int(array[int] of var int: x, var int: y);
+predicate gecode_member_int_reif(array[int] of var int: x, var int: y,
+    var bool: b);
+predicate member_int_reif(array[int] of var int: x, var int: y,
+    var bool: b) = gecode_member_int_reif(x,y,b);

@@ -3,7 +3,7 @@
 %     Guido Tack <tack@gecode.org>
 %
 %  Copyright:
-%     Guido Tack, 2007
+%     Guido Tack, 2010
 %
 %  This file is part of Gecode, the generic constraint
 %  development environment:
@@ -30,14 +30,16 @@
 %
 %
 
-predicate gecode_link_set_to_booleans(var set of int: s, array[int] of var bool: b, int: idx);
+predicate gecode_bin_packing_load(array[int] of var int: l,
+                                  array[int] of var int: bin,
+                                  array[int] of int: w,
+                                  int: minIndex);
 
-predicate link_set_to_booleans(var set of int: s, array[int] of var bool: b) =
-    assert(ub(s) subset index_set(b),
-        "link_set_to_booleans: the index set of b must be a superset of the possible values of s",
-        if min(index_set(b)) < 0 then
-          forall(i in index_set(b)) ( b[i] <-> i in s )
-        else
-          gecode_link_set_to_booleans(s,b,min(index_set(b)))
-        endif
-    );
+predicate bin_packing_load(array[int] of var int: l,
+                           array[int] of var int: bin,
+                           array[int] of int: w) =
+    assert(index_set(bin) == index_set(w),
+        "bin_packing_load: the bin and weight arrays must have identical index sets",
+    assert(lb_array(w) >= 0,
+        "bin_packing_load: the weights must be non-negative",
+    gecode_bin_packing_load(l,bin,w,min(index_set(l)))));

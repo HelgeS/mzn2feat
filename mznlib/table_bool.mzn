@@ -30,14 +30,10 @@
 %
 %
 
-predicate gecode_link_set_to_booleans(var set of int: s, array[int] of var bool: b, int: idx);
+predicate gecode_table_bool(array[int] of var bool: x, array[int, int] of bool: t);
 
-predicate link_set_to_booleans(var set of int: s, array[int] of var bool: b) =
-    assert(ub(s) subset index_set(b),
-        "link_set_to_booleans: the index set of b must be a superset of the possible values of s",
-        if min(index_set(b)) < 0 then
-          forall(i in index_set(b)) ( b[i] <-> i in s )
-        else
-          gecode_link_set_to_booleans(s,b,min(index_set(b)))
-        endif
-    );
+predicate table_bool(array[int] of var bool: x, array[int, int] of bool: t) =
+    assert (index_set_2of2(t) == index_set(x),
+        "The second dimension of the table must equal the number of variables "
+            ++ "in the first argument",
+        gecode_table_bool(x,t));
