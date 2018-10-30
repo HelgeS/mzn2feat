@@ -1,0 +1,1 @@
+predicate network_flow(array[int, int] of int, array[int] of int, array[int] of var int);
